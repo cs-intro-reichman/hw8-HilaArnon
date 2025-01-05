@@ -43,9 +43,11 @@
 
     /** If this user follows the given name, returns true; otherwise returns false. */
     public boolean follows(String name) {
+        String actualName = Character.toString(name.charAt(0)).toUpperCase();
+        actualName += name.substring(1);
         for(int i = 0; i < follows.length; i ++){
             if(follows[i] != null){
-                if (follows[i].equals(name)){
+                if (follows[i].equals(actualName)){
                     return true;
                 }
             }
@@ -56,12 +58,17 @@
     /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
-        if(follows(name)){              //cheaking if user follow the person 
+        String actualName = Character.toString(name.charAt(0)).toUpperCase();
+        actualName += name.substring(1);
+
+        if(this.name.equals(actualName) || follows(actualName)) {
             return false;
         }
+        
         for(int i = 0; i < follows.length; i ++){
             if(follows[i] == null){
-                follows[i] = name;
+                follows[i] = actualName;
+                fCount ++;
                 return true;
             }
         }
@@ -72,9 +79,12 @@
      *  If the name is not in the list, does nothing and returns false. */
     public boolean removeFollowee(String name) {
         for(int i = 0; i < follows.length; i ++){
-            if(follows[i].equals(name)){
-                follows[i] = null;
-                return true;             // name is removed
+            if(follows[i] != null){
+                if(follows[i].equals(name)){
+                    follows[i] = null;
+                    fCount --;
+                    return true;             // name is removed
+                }   
             }
         }
         return false;           // name isn't in user list
@@ -86,10 +96,9 @@
         int counter = 0;
         for(int i = 0; i < follows.length; i ++){
             if (this.follows[i] != null){
-                counter ++;
-            }
-            if (other.getfFollows()[i] != null){
-                counter ++;
+                if(other.follows(this.follows[i])){
+                    counter ++;
+                }
             }
         }
         return counter;
