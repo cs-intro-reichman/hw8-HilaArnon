@@ -72,9 +72,11 @@
      *  If the name is not in the list, does nothing and returns false. */
     public boolean removeFollowee(String name) {
         for(int i = 0; i < follows.length; i ++){
-            if(follows[i].equals(name)){
-                follows[i] = null;
-                return true;             // name is removed
+            if(follows[i] != null){
+                if(follows[i].equals(name)){
+                    follows[i] = null;
+                    return true;             // name is removed
+                }   
             }
         }
         return false;           // name isn't in user list
